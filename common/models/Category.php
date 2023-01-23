@@ -15,6 +15,7 @@ class Category extends ActiveRecord
         return [
             ['title', 'required'],
             ['description', 'string'],
+            ['status','integer'],
             [['created_at', 'updated_at'], 'safe']
         ];
     }
