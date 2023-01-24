@@ -2,8 +2,8 @@
 /yii
 /yii_test
 /yii_test.bat
-access.log
-error.log
+*.log
+
 .bowerrc
 # phpstorm project files
 .idea
