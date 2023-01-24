@@ -11,15 +11,22 @@ class CategoryController extends Controller
     public function actionCreate()
     {
        $category = new Category();
-//        if ($category->load(Yii::$app->request->post())) {
-//            if ($category->save()) {
-//                return $this->refresh();
-//            }
-//        }
+
+        $catTitle = Category::find()->select('title')->indexBy('id')->column();
+
+        if ($category->load(Yii::$app->request->post())) {
+            if ($category->save()) {
+                return $this->refresh();
+            }
+        }
 //        if (Yii::$app->request->isPost) {
-//            var_dump(Yii::$app->request->post());
+//            var_dump($catTitle);
 //            die;
-//        }
-        return $this->render('create', ['category' => $category]);
+//         }
+        return $this->render('create', [
+            'category' => $category,
+            'catTitle' => $catTitle,
+        ]);
     }
+
 }

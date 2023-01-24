@@ -5,6 +5,8 @@ use yii\bootstrap5\Html;
 use common\models\Category;
 
 /* @var $category Category */
+/* @var $catTitle  */
+
 
 $this->title = 'Create category';
 ?>
@@ -14,7 +16,7 @@ $this->title = 'Create category';
         <?php $form = ActiveForm::begin(); ?>
         <?= $form->field($category, 'title')->textInput() ?>
         <?= $form->field($category, 'description')->textarea() ?>
-        <?= Html::dropDownList('Select list','string',['name1'=>'value1','name2'=>'value2','name3'=>'value3']) ?>
+        <?= $form->field($category,'parent_id')->dropDownList($catTitle) ?>
         <?= $form->field($category, 'status')->dropDownList([0 => 'заблокована', 1 => 'активна']) ?>
         <?= $form->field($category, 'is_available')->checkbox() ?>
         <div class="form-group">
