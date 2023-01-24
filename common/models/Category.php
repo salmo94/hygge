@@ -13,10 +13,11 @@ class Category extends ActiveRecord
     public function rules()
     {
         return [
-            ['title', 'required'],
+            ['title', 'required','message' => 'Поле обовязкове для вводу'],
             ['description', 'string'],
             ['status','integer'],
-            [['created_at', 'updated_at'], 'safe']
+            [['created_at', 'updated_at'], 'safe'],
+            ['is_available','safe']
         ];
     }
 }

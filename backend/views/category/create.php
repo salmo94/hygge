@@ -15,9 +15,11 @@ $this->title = 'Create category';
         <?= $form->field($category, 'title')->textInput() ?>
         <?= $form->field($category, 'description')->textarea() ?>
         <?= $form->field($category, 'status')->dropDownList([0 => 'заблокована', 1 => 'активна']) ?>
+        <?= $form->field($category, 'is_available')->checkbox() ?>
         <div class="form-group">
             <?= Html::submitButton('Create', ['class' => 'btn btn-primary btn-block']) ?>
         </div>
         <?php ActiveForm::end(); ?>
     </div>
 </div>
+
