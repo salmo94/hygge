@@ -17,7 +17,7 @@ class Category extends ActiveRecord
             ['description', 'string'],
             ['status','integer'],
             [['created_at', 'updated_at'], 'safe'],
-            ['is_available','safe']
+            ['is_available','boolean']
         ];
     }
 }
