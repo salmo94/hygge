@@ -13,6 +13,7 @@ use yii\db\ActiveRecord;
  * @property string $updated_at
  * @property boolean $is_available
  * @property int $parent_id
+ * @property-read Category $parent
  */
 class Category extends ActiveRecord
 {
@@ -37,5 +38,13 @@ class Category extends ActiveRecord
             ['is_available','boolean'],
             ['parent_id','integer'],
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParent(): \yii\db\ActiveQuery
+    {
+        return $this->hasOne(Category::class,['id' => 'parent_id']);
     }
 }
