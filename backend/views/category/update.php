@@ -30,6 +30,7 @@ $this->title = 'Update category';
 
         <div class="form-group">
             <?= Html::submitButton('Update', ['class' => 'btn btn-success btn-block']) ?>
+            <?php   echo \yii\helpers\Html::a('Назад','index',['class' => '  btn btn-primary']);?>
         </div>
         <?php ActiveForm::end(); ?>
     </div>

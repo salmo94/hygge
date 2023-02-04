@@ -13,7 +13,7 @@ use yii\widgets\DetailView;
 
 
 <?php
-
+echo \yii\helpers\Html::a('Назад','index',['class' => ' mb-2 btn btn-primary']);
 echo DetailView::widget([
     'model' => $category,
     'attributes' => [

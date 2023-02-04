@@ -81,4 +81,19 @@ class CategoryController extends Controller
         ]);
 
     }
+
+    /**
+     * @param $id
+     * @return void|\yii\web\Response
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+
+    public function actionDelete($id)
+    {
+        $category = Category::findOne($id);
+        if ($category->delete()){
+            return $this->redirect(['index']);
+        }
+    }
 }

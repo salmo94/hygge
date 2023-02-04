@@ -11,7 +11,7 @@ use yii\data\ActiveDataProvider;
 
 $this->title = 'Category list';
 
-echo \yii\helpers\Html::a('Створити категорію','create',['class' => 'btn btn-primary']);
+echo \yii\helpers\Html::a('Створити категорію','create',['class' => 'mb-2 btn btn-primary']);
 
 echo \yii\grid\GridView::widget([
     'filterModel' => $searchModel,
@@ -39,7 +39,8 @@ echo \yii\grid\GridView::widget([
             'filterInputOptions' => ['prompt' => 'select...', 'class' => 'form-control',]
         ],
         [ 'class' => 'yii\grid\ActionColumn',
-            'template' => '{view}{update}',
+            'template' => '{view}{update}{delete}',
+
             ],
     ]
 ]);
