@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\CategorySearch;
 use common\models\Category;
 use Yii;
 use yii\web\Controller;
@@ -37,12 +38,27 @@ class CategoryController extends Controller
 
     {
         $category = Category::findOne($id);
-        if ($category === null){
-            throw new NotFoundHttpException('Not found category id :' . $id );
+        if ($category === null) {
+            throw new NotFoundHttpException('Not found category id :' . $id);
         }
-
-        return $this->render('show',[
+        return $this->render('show', [
             'category' => $category,
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+
+    public function actionIndex()
+    {
+        $categorySearch = new CategorySearch();
+        $dataProvider = $categorySearch->search(Yii::$app->request->get());
+        $categoriesForSelect = Category::find()->select('title')->indexBy('id')->column();
+        return $this->render('index', [
+            'searchModel' => $categorySearch,
+            'dataProvider' => $dataProvider,
+            'categories' => $categoriesForSelect,
         ]);
     }
 }
