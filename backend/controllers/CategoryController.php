@@ -34,7 +34,7 @@ class CategoryController extends Controller
      * @throws NotFoundHttpException
      */
 
-    public function actionView($id)
+    public function actionView($id): string
 
     {
         $category = Category::findOne($id);
@@ -50,7 +50,7 @@ class CategoryController extends Controller
      * @return string
      */
 
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $categorySearch = new CategorySearch();
         $dataProvider = $categorySearch->search(Yii::$app->request->get());
@@ -60,5 +60,25 @@ class CategoryController extends Controller
             'dataProvider' => $dataProvider,
             'categories' => $categoriesForSelect,
         ]);
+    }
+
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     */
+
+    public function actionUpdate($id)
+    {
+        $category = Category::findOne($id);
+        if ($category->load(Yii::$app->request->post()) && $category->save(false)){
+            return $this->redirect(['index']);
+        }
+        $categoriesForSelect = Category::find()->select('title')->indexBy('id')->column();
+
+        return $this->render('update', [
+            'category' => $category,
+            'categories' => $categoriesForSelect
+        ]);
+
     }
 }
