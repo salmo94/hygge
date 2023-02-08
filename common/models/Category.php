@@ -12,6 +12,7 @@ use yii\db\ActiveRecord;
  * @property string $created_at
  * @property string $updated_at
  * @property boolean $is_available
+ * @property boolean $is_deleted
  * @property int $parent_id
  * @property-read Category $parent
  */
@@ -35,7 +36,7 @@ class Category extends ActiveRecord
             ['description', 'string'],
             ['status','integer'],
             [['created_at', 'updated_at'], 'safe'],
-            ['is_available','boolean'],
+            [['is_available','is_deleted'],'boolean'],
             ['parent_id','integer'],
         ];
     }

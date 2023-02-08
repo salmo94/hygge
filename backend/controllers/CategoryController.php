@@ -16,10 +16,11 @@ class CategoryController extends Controller
     public function actionCreate()
     {
         $category = new Category();
-        $categoriesForSelect = Category::find()->select('title')->indexBy('id')->column();
+
+        $categoriesForSelect = Category::find()->select('title')->where(['is_deleted' => false])->indexBy('id')->column();
 
         if (Yii::$app->request->isPost && $category->load(Yii::$app->request->post()) && $category->save()) {
-            return $this->redirect(Yii::$app->request->referrer);
+            return $this->redirect(['view','id' => $category->id]);
         }
 
         return $this->render('create', [
@@ -54,7 +55,7 @@ class CategoryController extends Controller
     {
         $categorySearch = new CategorySearch();
         $dataProvider = $categorySearch->search(Yii::$app->request->get());
-        $categoriesForSelect = Category::find()->select('title')->indexBy('id')->column();
+        $categoriesForSelect = Category::find()->select('title')->where(['is_deleted' => false])->indexBy('id')->column();
         return $this->render('index', [
             'searchModel' => $categorySearch,
             'dataProvider' => $dataProvider,
@@ -70,10 +71,10 @@ class CategoryController extends Controller
     public function actionUpdate($id)
     {
         $category = Category::findOne($id);
-        if ($category->load(Yii::$app->request->post()) && $category->save(false)){
+        if ($category->load(Yii::$app->request->post()) && $category->save()){
             return $this->redirect(['index']);
         }
-        $categoriesForSelect = Category::find()->select('title')->indexBy('id')->column();
+        $categoriesForSelect = Category::find()->select('title')->where(['is_deleted' => false])->indexBy('id')->column();
 
         return $this->render('update', [
             'category' => $category,
@@ -92,8 +93,8 @@ class CategoryController extends Controller
     public function actionDelete($id)
     {
         $category = Category::findOne($id);
-        if ($category->delete()){
-            return $this->redirect(['index']);
-        }
+        $category->is_deleted = true;
+        $category->save();
+        return $this->redirect(['index']);
     }
 }

@@ -28,6 +28,7 @@ class CategorySearch extends Category
     public function search(array $params)
     {
         $query = Category::find();
+        $query->where(['is_deleted' => false]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
