@@ -1,19 +1,22 @@
 <?php
 
+use backend\models\CategorySearch;
+use common\models\Category;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Html;
 
 /**
- * @var $searchModel \backend\models\CategorySearch
- * @var $dataProvider \yii\data\ActiveDataProvider
+ * @var $searchModel CategorySearch
+ * @var $dataProvider ActiveDataProvider
  * @var $categories array
  */
 
 $this->title = 'Category list';
 
-echo \yii\helpers\Html::a('Створити категорію','create',['class' => 'mb-2 btn btn-primary']);
+echo Html::a('Створити категорію','create',['class' => 'mb-2 btn btn-primary']);
 
-echo \yii\grid\GridView::widget([
+echo GridView::widget([
     'filterModel' => $searchModel,
     'dataProvider' => $dataProvider,
     'columns' => [
@@ -22,18 +25,17 @@ echo \yii\grid\GridView::widget([
         'description',
         ['attribute' => 'status',
             'filter' => [0 => 'заблокована', 1 => 'активна'],
-            'value' => function (\common\models\Category $category) {
+            'value' => function (Category $category) {
                 if ($category->status === 1) {
                     return 'активна';
                 }
                 return 'заблокована';
-
             },
             'filterInputOptions' => ['prompt' => 'виберіть статус', 'class' => 'form-control',]
         ],
         ['attribute' => 'parent_id',
             'filter' => $categories,
-            'value' => function (\common\models\Category $category) {
+            'value' => function (Category $category) {
                return $category->parent->title ?? null;
             },
             'filterInputOptions' => ['prompt' => 'select...', 'class' => 'form-control',]

@@ -7,13 +7,14 @@ use yii\widgets\DetailView;
 /**
  * @var $category Category
  * @var $parentCategory Category
+ *
  */
 
 ?>
 
 
 <?php
-echo \yii\helpers\Html::a('Назад','index',['class' => ' mb-2 btn btn-primary']);
+echo Html::a('Назад','index',['class' => ' mb-2 btn btn-primary']);
 echo DetailView::widget([
     'model' => $category,
     'attributes' => [

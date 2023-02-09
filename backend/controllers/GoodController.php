@@ -2,30 +2,29 @@
 
 namespace backend\controllers;
 
-use backend\models\CategorySearch;
+use backend\models\GoodSearch;
 use common\models\Category;
+use common\models\Good;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class CategoryController extends Controller
+class GoodController extends Controller
 {
     /**
      * @return string|Response
      */
+
     public function actionCreate()
     {
-        $category = new Category();
-
+        $good = new Good();
         $categoriesForSelect = Category::find()->select('title')->where(['is_deleted' => false])->indexBy('id')->column();
-
-        if (Yii::$app->request->isPost && $category->load(Yii::$app->request->post()) && $category->save()) {
-            return $this->redirect(['view','id' => $category->id]);
+        if (Yii::$app->request->isPost && $good->load(Yii::$app->request->post()) && $good->save()) {
+            return $this->redirect(['view','id' => $good->id]);
         }
-
         return $this->render('create', [
-            'category' => $category,
+            'good' => $good,
             'categories' => $categoriesForSelect,
         ]);
     }
@@ -37,14 +36,13 @@ class CategoryController extends Controller
      */
 
     public function actionView($id): string
-
     {
-        $category = Category::findOne($id);
-        if ($category === null) {
-            throw new NotFoundHttpException('Not found category id :' . $id);
+        $good = Good::findOne($id);
+        if ($good === null){
+            throw new NotFoundHttpException('Not found good id:' . $id);
         }
-        return $this->render('show', [
-            'category' => $category,
+        return $this->render('show',[
+           'good' => $good,
         ]);
     }
 
@@ -54,12 +52,12 @@ class CategoryController extends Controller
 
     public function actionIndex(): string
     {
-        $categorySearch = new CategorySearch();
-        $dataProvider = $categorySearch->search(Yii::$app->request->get());
+        $goodSearch = new GoodSearch();
+        $dataProvider = $goodSearch->search(Yii::$app->request->get());
         $categoriesForSelect = Category::find()->select('title')->where(['is_deleted' => false])->indexBy('id')->column();
-        return $this->render('index', [
-            'searchModel' => $categorySearch,
-            'dataProvider' => $dataProvider,
+        return $this->render('index',[
+           'searchModel' => $goodSearch,
+           'dataProvider' => $dataProvider,
             'categories' => $categoriesForSelect,
         ]);
     }
@@ -71,31 +69,28 @@ class CategoryController extends Controller
 
     public function actionUpdate($id)
     {
-        $category = Category::findOne($id);
-        if ($category->load(Yii::$app->request->post()) && $category->save()){
+        $good = Good::findOne($id);
+        if ($good->load(Yii::$app->request->post()) && $good->save()){
             return $this->redirect(['index']);
         }
         $categoriesForSelect = Category::find()->select('title')->where(['is_deleted' => false])->indexBy('id')->column();
-
-        return $this->render('update', [
-            'category' => $category,
+        return $this->render('update',[
+            'good' => $good,
             'categories' => $categoriesForSelect
-        ]);
 
+        ]);
     }
 
-    /**
+    /**]
      * @param $id
-     * @return void|Response
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @return Response
      */
 
-    public function actionDelete($id)
+    public function actionDelete($id): Response
     {
-        $category = Category::findOne($id);
-        $category->is_deleted = true;
-        $category->save();
+        $good = Good::findOne($id);
+        $good->is_deleted = true;
+        $good->save();
         return $this->redirect(['index']);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace backend\models;
 
-use common\models\Category;
+use common\models\Good;
 use yii\data\ActiveDataProvider;
 
-class CategorySearch extends Category
+class GoodSearch extends Good
 {
     /**
      * @return array
@@ -14,9 +14,9 @@ class CategorySearch extends Category
     public function rules(): array
     {
         return [
-            [['id', 'status', 'parent_id'], 'integer'],
+            [['id', 'price', 'article', 'status', 'category_id'], 'integer'],
             [['title', 'description', 'created_at', 'updated_at'], 'string'],
-            ['is_available', 'boolean'],
+            ['is_available', 'boolean']
         ];
     }
 
@@ -27,7 +27,7 @@ class CategorySearch extends Category
 
     public function search(array $params): ActiveDataProvider
     {
-        $query = Category::find();
+        $query = Good::find();
         $query->where(['is_deleted' => false]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -36,9 +36,10 @@ class CategorySearch extends Category
             return $dataProvider;
         }
         $query->andFilterWhere(['id' => $this->id]);
+        $query->andFilterWhere(['price' => $this->price]);
+        $query->andFilterWhere(['article' => $this->article]);
         $query->andFilterWhere(['status' => $this->status]);
-        $query->andFilterWhere(['parent_id' => $this->parent_id]);
-        $query->andFilterWhere(['is_available' => $this->is_available]);
+        $query->andFilterWhere(['category_id' => $this->category_id]);
         $query->andFilterWhere(['like', 'title', $this->title]);
         $query->andFilterWhere(['like', 'description', $this->description]);
 
