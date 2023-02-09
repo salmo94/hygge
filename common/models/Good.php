@@ -9,23 +9,25 @@ use yii\db\ActiveRecord;
  * @property int $id
  * @property string $title
  * @property string $description
+ * @property integer $price
+ * @property integer $article
  * @property int $status
  * @property string $created_at
  * @property string $updated_at
  * @property boolean $is_available
  * @property boolean $is_deleted
- * @property int $parent_id
- * @property-read Category $parent
- * @property-read Good $good
+ * @property int $category_id
+ * @property-read Category $category
  */
-class Category extends ActiveRecord
+
+class Good extends ActiveRecord
 {
     /**
      * @return string
      */
     public static function tableName(): string
     {
-        return 'categories';
+        return 'goods';
     }
 
     /**
@@ -34,25 +36,20 @@ class Category extends ActiveRecord
     public function rules(): array
     {
         return [
-            ['title', 'required','message' => 'Поле обовязкове для вводу'],
+            ['title', 'required', 'message' => 'Поле обовʼязкове для вводу'],
             ['description', 'string'],
-            ['status','integer'],
+            [['price', 'article', 'status', 'category_id'], 'integer'],
+            [['is_available', 'is_deleted'], 'boolean'],
             [['created_at', 'updated_at'], 'safe'],
-            [['is_available','is_deleted'],'boolean'],
-            ['parent_id','integer'],
         ];
     }
 
     /**
      * @return ActiveQuery
      */
-    public function getParent(): ActiveQuery
-    {
-        return $this->hasOne(Category::class,['id' => 'parent_id']);
-    }
 
-    public function  getGood()
+    public function getCategory(): ActiveQuery
     {
-        return $this->hasMany(Good::class,['category_id' => 'id']);
+        return $this->hasOne(Category::class,['id' => 'category_id']);
     }
 }
