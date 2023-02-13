@@ -5,10 +5,12 @@ namespace backend\controllers;
 use backend\models\GoodSearch;
 use common\models\Category;
 use common\models\Good;
+use common\models\GoodsImage;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use yii\web\UploadedFile;
 
 class GoodController extends Controller
 {
@@ -21,6 +23,8 @@ class GoodController extends Controller
         $good = new Good();
         $categoriesForSelect = Category::find()->select('title')->where(['is_deleted' => false])->indexBy('id')->column();
         if (Yii::$app->request->isPost && $good->load(Yii::$app->request->post()) && $good->save()) {
+            $good->imageFiles = UploadedFile::getInstances($good, 'imageFiles');
+            $good->upload();
             return $this->redirect(['view','id' => $good->id]);
         }
         return $this->render('create', [
@@ -37,6 +41,8 @@ class GoodController extends Controller
 
     public function actionView($id): string
     {
+
+
         $good = Good::findOne($id);
         if ($good === null){
             throw new NotFoundHttpException('Not found good id:' . $id);
@@ -71,6 +77,8 @@ class GoodController extends Controller
     {
         $good = Good::findOne($id);
         if ($good->load(Yii::$app->request->post()) && $good->save()){
+            $good->imageFiles = UploadedFile::getInstances($good, 'imageFiles');
+            $good->upload();
             return $this->redirect(['index']);
         }
         $categoriesForSelect = Category::find()->select('title')->where(['is_deleted' => false])->indexBy('id')->column();
