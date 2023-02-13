@@ -16,7 +16,7 @@ use yii\data\ActiveDataProvider;
 ?>
 
 <?php
-echo Html::a('Створити категорію','create',['class' => 'mb-2 btn btn-primary']);
+echo Html::a('Створити товар','create',['class' => 'mb-2 btn btn-primary']);
 echo GridView::widget([
     'filterModel' => $searchModel,
     'dataProvider' => $dataProvider,
@@ -31,9 +31,9 @@ echo GridView::widget([
              'filter' => [0 => 'заблокована', 1 => 'активна'],
              'value' => function (Good $good) {
               if ($good->status === 1) {
-               return 'активна';
+               return 'активний';
               }
-              return 'заблокована';
+              return 'заблокований';
              },
              'filterInputOptions' => ['prompt' => 'виберіть статус', 'class' => 'form-control',]
          ], ['attribute' => 'is_available',

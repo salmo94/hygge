@@ -4,6 +4,8 @@ namespace common\models;
 
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\FileHelper;
+use yii\web\UploadedFile;
 
 /**
  * @property int $id
@@ -23,6 +25,10 @@ use yii\db\ActiveRecord;
 class Good extends ActiveRecord
 {
     /**
+     * @var UploadedFile[]
+     */
+    public array $imageFiles;
+    /**
      * @return string
      */
     public static function tableName(): string
@@ -41,6 +47,7 @@ class Good extends ActiveRecord
             [['price', 'article', 'status', 'category_id'], 'integer'],
             [['is_available', 'is_deleted'], 'boolean'],
             [['created_at', 'updated_at'], 'safe'],
+            [['imageFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 4],
         ];
     }
 
@@ -51,5 +58,32 @@ class Good extends ActiveRecord
     public function getCategory(): ActiveQuery
     {
         return $this->hasOne(Category::class,['id' => 'category_id']);
+    }
+
+
+
+    public function upload()
+    {
+        if ($this->validate(['imageFiles'])) {
+             FileHelper::createDirectory('images/' . $this->id);
+            foreach ($this->imageFiles as $file) {
+                $path = 'images/'. $this->id . '/' . $file->baseName . '.' . $file->extension;
+                $isFileSaved = $file->saveAs($path);
+                if ($isFileSaved){
+                    $goodsImage = new GoodsImage();
+                    $goodsImage->goods_id = $this->id;
+                    $goodsImage->path = $path;
+                    $goodsImage->save();
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getImages(): ActiveQuery
+    {
+        return $this->hasMany(GoodsImage::class,['goods_id' => 'id']);
     }
 }
